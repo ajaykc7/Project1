@@ -62,6 +62,10 @@ namespace Cecs475.BoardGames.Chess.Model {
 		public bool IsStalemate {
 			get { throw new NotImplementedException("You must implement this property."); }
 		}
+
+		public bool IsDraw {
+			get { throw new NotImplementedException("You must implement this property."); }
+		}
 		
 		/// <summary>
 		/// Tracks the current draw counter, which goes up by 1 for each non-capturing, non-pawn move, and resets to 0
