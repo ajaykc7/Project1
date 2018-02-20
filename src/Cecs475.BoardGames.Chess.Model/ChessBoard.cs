@@ -176,5 +176,26 @@ namespace Cecs475.BoardGames.Chess.Model {
 		public ChessBoard() {
 
 		}
+
+		public ChessBoard(IEnumerable<Tuple<BoardPosition, ChessPiece>> startingPositions)
+			: this() {
+			var king1 = startingPositions.Where(t => t.Item2.Player == 1 && t.Item2.PieceType == ChessPieceType.King);
+			var king2 = startingPositions.Where(t => t.Item2.Player == 2 && t.Item2.PieceType == ChessPieceType.King);
+			if (king1.Count() != 1 || king2.Count() != 1) {
+				throw new ArgumentException("A chess board must have a single king for each player");
+			}
+
+			foreach (var position in BoardPosition.GetRectangularPositions(8, 8)) {
+				SetPieceAtPosition(position, ChessPiece.Empty);
+			}
+
+			int[] values = { 0, 0 };
+			foreach (var pos in startingPositions) {
+				SetPieceAtPosition(pos.Item1, pos.Item2);
+				// TODO: you must calculate the overall advantage for this board, in terms of the pieces
+				// that the board has started with. "pos.Item2" will give you the chess piece being placed
+				// on this particular position.
+			}
+		}
 	}
 }
