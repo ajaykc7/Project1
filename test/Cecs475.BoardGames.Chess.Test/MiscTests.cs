@@ -224,5 +224,28 @@ namespace Cecs475.BoardGames.Chess.Test {
 				.And.Contain(Move("a4, a5")).And.NotContain(Move("a4, a6"));
 		}
 
+		[Fact]
+		public void DrawCounterTest() {
+			ChessBoard b = new ChessBoard();
+			Apply(b, "b1, a3");
+			b.DrawCounter.Should().Be(1, "a knight moved without capture");
+			Apply(b, "a7, a5");
+			b.DrawCounter.Should().Be(0, "a pawn moved");
+			Apply(b, "a3, c4");
+			b.DrawCounter.Should().Be(1, "a knight moved without capture");
+			Apply(b, "b8, a6");
+			b.DrawCounter.Should().Be(2, "two knights moved without capture");
+			Apply(b, "c4, a5");
+			b.DrawCounter.Should().Be(0, "a knight captured a pawn");
+
+			b.UndoLastMove();
+			b.DrawCounter.Should().Be(2, "undid a capture move; DrawCounter should be restored to its value before the capture, which was 2");
+			b.UndoLastMove();
+			b.DrawCounter.Should().Be(1, "undid a knight move; DrawCounter should go down by 1");
+			b.UndoLastMove();
+			b.DrawCounter.Should().Be(0, "undid a knight move; DrawCounter should go down by 1");
+			b.UndoLastMove();
+			b.DrawCounter.Should().Be(1, "undid a pawn move; DrawCounter should be restored to its value before the move, which was 1");
+		}
 	}
 }
