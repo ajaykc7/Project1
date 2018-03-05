@@ -18,3 +18,10 @@ jobs:
                 dotnet test test/Cecs475.BoardGames.Chess.Test | tee -a TESTOUTPUT
                 curl -X POST -H "Content-Type: text/plain" -d @TESTOUTPUT $EMAIL_URL
             fi
+      - run:
+          when: always
+          command: |
+            if [ -f GRADEME.txt ]; then
+                curl -X POST -H "Content-Type: text/plain" -d @TESTOUTPUT $EMAIL_URL
+            fi
+      
